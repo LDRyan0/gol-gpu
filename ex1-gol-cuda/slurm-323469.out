@@ -1,0 +1,47 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: matplotlib in /home/ldryan0/.local/lib/python3.6/site-packages (3.3.4)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.3 in /home/ldryan0/.local/lib/python3.6/site-packages (from matplotlib) (3.0.6)
+Requirement already satisfied: kiwisolver>=1.0.1 in /home/ldryan0/.local/lib/python3.6/site-packages (from matplotlib) (1.3.1)
+Requirement already satisfied: numpy>=1.15 in /pawsey/centos7.6/python/3.6.3/numpy/1.19.0/lib/python3.6/site-packages/numpy-1.19.0-py3.6-linux-x86_64.egg (from matplotlib) (1.19.0)
+Requirement already satisfied: python-dateutil>=2.1 in /home/ldryan0/.local/lib/python3.6/site-packages (from matplotlib) (2.8.2)
+Requirement already satisfied: cycler>=0.10 in /home/ldryan0/.local/lib/python3.6/site-packages (from matplotlib) (0.11.0)
+Requirement already satisfied: pillow>=6.2.0 in /home/ldryan0/.local/lib/python3.6/site-packages (from matplotlib) (8.4.0)
+Requirement already satisfied: six>=1.5 in /home/ldryan0/.local/lib/python3.6/site-packages (from python-dateutil>=2.1->matplotlib) (1.16.0)
+rm obj/*
+rm: cannot remove ‘obj/*’: No such file or directory
+make: *** [clean] Error 1
+srun: error: t008: task 0: Exited with exit code 2
+nvcc -O0 -g   -o obj/common.o -c src/common.c 
+nvcc -O0 -g   -o bin/game_of_life src/game_of_life.c obj/common.o 
+nvcc -G -lineinfo -O0 -g   -o bin/game_of_life_cuda src/game_of_life_cuda.cu obj/common.o 
+nvcc warning : '--device-debug (-G)' overrides '--generate-line-info (-lineinfo)'
+ptxas warning : Conflicting options --device-debug and --generate-line-info specified, ignoring --generate-line-info option
+Requesting grid size of (10,10), which requires 0.000000 GB 
+CPU:        0.343000 ms
+GPU:        229.848007 ms
+Speedup:    0.00x
+Kernel:     2.451000 ms
+            1.066%
+Correct:    [0;32m100/100
+[0mRequesting grid size of (100,100), which requires 0.000037 GB 
+CPU:        30.319000 ms
+GPU:        129.804993 ms
+Speedup:    0.23x
+Kernel:     2.318000 ms
+            1.786%
+Correct:    [0;32m10000/10000
+[0mRequesting grid size of (1000,1000), which requires 0.003725 GB 
+CPU:        2124.632080 ms
+GPU:        153.992004 ms
+Speedup:    13.80x
+Kernel:     21.155993 ms
+            13.738%
+Correct:    [0;32m1000000/1000000
+[0mRequesting grid size of (10000,10000), which requires 0.372529 GB 
+CPU:        212526.406250 ms
+GPU:        2112.741943 ms
+Speedup:    100.59x
+Kernel:     1743.430054 ms
+            82.520%
+Correct:    [0;32m100000000/100000000
+[0m

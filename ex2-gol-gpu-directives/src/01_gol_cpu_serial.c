@@ -1,6 +1,8 @@
+#ifndef COMMON_H
 #include "common.h"
+#endif
 
-void game_of_life(struct Options *opt, int *current_grid, int *next_grid, int n, int m){
+void game_of_life_cpu(struct Options *opt, int *current_grid, int *next_grid, int n, int m){
     int neighbours;
     int n_i[8], n_j[8];
     for(int i = 0; i < n; i++){
@@ -63,7 +65,6 @@ void game_of_life_stats(struct Options *opt, int step, int *current_grid){
 }
 
 
-
 int main(int argc, char **argv)
 {
     struct Options *opt = (struct Options *) malloc(sizeof(struct Options));
@@ -81,16 +82,14 @@ int main(int argc, char **argv)
     struct timeval start, steptime;
     start = init_time();
     while(current_step != nsteps){
-        steptime = init_time();
-        game_of_life(opt, grid, updated_grid, n, m);
+        game_of_life_cpu(opt, grid, updated_grid, n, m);
         // swap current and updated grid
         tmp = grid;
         grid = updated_grid;
         updated_grid = tmp;
         current_step++;
-        get_elapsed_time(steptime);
     }
-    game_of_life_stats(opt, current_step, grid);
+    // game_of_life_stats(opt, current_step, grid);
     printf("Finnished GOL\n");
     get_elapsed_time(start);
     free(grid);

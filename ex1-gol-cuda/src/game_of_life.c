@@ -55,7 +55,7 @@ int* cpu_game_of_life(const int *initial_state, int n, int m, int nsteps){
     while(current_step != nsteps){
         current_step++;
         // Uncomment the following line if you want to print the state at every step
-        //visualise(VISUAL_ASCII, current_step, grid, n, m);
+        // visualise(VISUAL_ASCII, current_step, grid, n, m);
         cpu_game_of_life_step(grid, updated_grid, n, m);
         // swap current and updated grid
         tmp = grid;

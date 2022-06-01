@@ -27,7 +27,7 @@ PREPROCESSFLAGS = -Mpreprocess
 COMMONFLAGS = $(OPTFLAGS) $(VISUALFLAGS) 
 
 .PHONY : dir cpu_serial gpu_openacc
-.PHONY : gpu_openacc gpu_openacc_fort
+.PHONY : gpu_openacc
 
 all : dirs cpu_serial gpu_openacc 
 
@@ -40,28 +40,17 @@ clean :
 	rm bin/*
 
 # just make an easier make name to remember
-cpu_serial : bin/01_gol_cpu_serial bin/01_gol_cpu_serial_fort
+cpu_serial : bin/01_gol_cpu_serial
 # gpu related 
-gpu_openacc : bin/02_gol_gpu_openacc bin/02_gol_gpu_openacc_fort 
+gpu_openacc : bin/02_gol_gpu_openacc
 
 obj/common.o : src/common.h src/common.c
 	$(CC) $(PREPROCESSFLAGS) $(COMMONFLAGS) $(CFLAGS) -c src/common.c -o obj/common.o
-
-obj/common_fort.o : src/common_fort.f90 
-	$(FORT) $(PREPROCESSFLAGS) $(COMMONFLAGS) $(FFLAGS) -c src/common_fort.f90 -o obj/common_fort.o
 
 bin/01_gol_cpu_serial : src/01_gol_cpu_serial.c obj/common.o
 	$(CC) $(COMMONFLAGS) $(CFLAGS) -c src/01_gol_cpu_serial.c -o obj/01_gol_cpu_serial.o
 	$(CC) $(COMMONFLAGS) $(CFLAGS) -o bin/01_gol_cpu_serial obj/01_gol_cpu_serial.o obj/common.o
 
-bin/01_gol_cpu_serial_fort : src/01_gol_cpu_serial_fort.f90 obj/common_fort.o
-	$(FORT) $(PREPROCESSFLAGS) $(COMMONFLAGS) $(FFLAGS) -c src/01_gol_cpu_serial_fort.f90 -o obj/01_gol_cpu_serial_fort.o
-	$(FORT) $(COMMONFLAGS) $(FFLAGS) -o bin/01_gol_cpu_serial_fort obj/01_gol_cpu_serial_fort.o obj/common_fort.o
-
 bin/02_gol_gpu_openacc: src/02_gol_gpu_openacc.c obj/common.o
 	$(CC) $(COMMONFLAGS) $(OPENACCFLAGS) $(CFLAGS) -c src/02_gol_gpu_openacc.c -o obj/02_gol_gpu_openacc.o
 	$(CC) $(COMMONFLAGS) $(OPENACCFLAGS) $(CFLAGS) -o bin/02_gol_gpu_openacc obj/02_gol_gpu_openacc.o obj/common.o 
-
-bin/02_gol_gpu_openacc_fort: src/02_gol_gpu_openacc_fort.f90 obj/common_fort.o
-	$(FORT) $(PREPROCESSFLAGS) $(COMMONFLAGS) $(OPENACCFLAGS) $(FFLAGS) -c src/02_gol_gpu_openacc_fort.f90 -o obj/02_gol_gpu_openacc_fort.o
-	$(FORT) $(COMMONFLAGS) $(OPENACCFLAGS) $(FFLAGS) -o bin/02_gol_gpu_openacc_fort obj/02_gol_gpu_openacc_fort.o obj/common_fort.o
